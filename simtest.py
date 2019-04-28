@@ -233,6 +233,7 @@ class StatMonitor(ExecutionMonitorBase):
     def on_path(self, result):
         super(StatMonitor, self).on_path(result)
         self.npath += 1
+        #ckx：判断是否是commutative path的条件语句
         if result.type == 'value' and len(result.value.diverge) == 0:
             self.ncompath += 1
 
@@ -330,12 +331,15 @@ def test_callset(base, callset, monitors,
     terminated = False
     diverged = set()
     all_internals = []
+    #ckx：猜测是有些路径没有得出解，就不计入commutative path
+    #callset 作为元组被传参
     for sar in simsym.symbolic_apply(test, base, *callset):
         if sar.type == 'value':
             is_commutative = (len(sar.value.diverge) == 0)
             diverged.update(sar.value.diverge)
             condlists[is_commutative].append(sar.path_condition)
             all_internals.extend(sar.internals)
+        #ckx: commutative path 计数的地方
         monitor.on_path(sar)
         if monitor.stop_call_set():
             terminated = True

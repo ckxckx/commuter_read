@@ -529,7 +529,7 @@ class FsState(object):
       'int r = fsync(%d);' % self.procs[args.pid.val].fds[args.fd],
       self.__check(res),
       'return xerrno(r);')
-
+# ckx: codegen testcase 生成
 class FsTestGenerator(testgen.TestGenerator):
   def __init__(self, test_file_name):
     super(FsTestGenerator, self).__init__(test_file_name)

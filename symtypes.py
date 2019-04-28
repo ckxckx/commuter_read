@@ -141,7 +141,7 @@ class SSmallListBase(Symbolic):
         for x in range(by, self._limit):
             setattr(self, "_e%d" % (x - by), getattr(self, "_e%d" % x))
         self._len -= by
-
+# ckx：映射符号变量的变化过程
 def tsmalllist(limit, valueType, lenType=SInt):
     """Return a new small list type whose length is limited to limit.
 
@@ -210,6 +210,7 @@ class SDictBase(Symbolic):
 
         self._valid[key] = True
         return self._map[key]
+
 
 def tdict(keyType, valueType):
     name = "SDict_" + keyType.__name__ + "_" + valueType.__name__

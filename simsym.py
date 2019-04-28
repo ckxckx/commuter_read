@@ -1,5 +1,5 @@
 """Simple symbolic execution engine for Python."""
-
+# ckx: 为自己封装了一个很好用的z3前端
 import sys
 import os
 import z3
@@ -564,6 +564,8 @@ class SBool(SExpr, SymbolicConst):
 class SUninterpretedBase(SExpr):
     pass
 
+
+# ckx: 符号化变量类
 def tuninterpreted(name):
     """Return a new uninterpreted symbolic type.
 
@@ -815,7 +817,7 @@ class SStructBase(Symbolic):
         cval = self._getter()
         cval[name] = unwrap(val)
         self._setter(cval)
-
+#ckx: 符号变量变化的方法
 def tstruct(**fields):
     """Return a subclass of SStructBase for a struct type with the
     given fields.  'fields' must be a dictionary mapping from names to
@@ -1305,7 +1307,7 @@ def assume(e):
         raise UnsatisfiablePath()
     elif sat != z3.sat:
         raise UncheckableConstraintError(unwrap(e), reason)
-
+#ckx:
 class SymbolicApplyResult(object):
     """The result of a symbolic application.
 
@@ -1479,7 +1481,7 @@ class SymbolicApplyResult(object):
             else:
                 raise Exception("Failed to resolve type of %s" % const)
         return rec(outer_type, path)
-
+#ckx:
 def symbolic_apply(fn, *args):
     """Evaluate fn(*args) under symbolic execution.
 
@@ -1503,6 +1505,8 @@ def symbolic_apply(fn, *args):
         path_state = PathState(cursched)
         Env(root_env, scheduler, path_state).activate()
         sar = None
+
+        #ckx：找到了——的确是有解的路径才被设置为value
         try:
             rv = fn(*args)
             sar = SymbolicApplyResult("value", rv, Env.current())

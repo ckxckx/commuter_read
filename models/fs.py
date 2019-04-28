@@ -6,6 +6,9 @@ import model
 import signal
 import fs_testgen
 
+
+# ckx: 符号化状态 (interface,参数，状态三要素之一的状态)
+
 SFn = simsym.tuninterpreted("SFn")
 SInum = simsym.tuninterpreted("SInum")
 SDataVal = simsym.tuninterpreted("SDataVal")
@@ -18,6 +21,8 @@ PAGE_DATAVALS = PAGE_BYTES / DATAVAL_BYTES
 assert PAGE_BYTES % DATAVAL_BYTES == 0
 DATA_MAX_LEN = 8
 
+
+#ckx: 符号状态通过simsym,symtypes等定义的一些函数（tstruct,tmap,tstruct）进行符号化传递
 SPid = simsym.SBool
 SOffset = simsym.tsynonym("SOffset", simsym.SInt)
 SData = symtypes.tsmalllist(DATA_MAX_LEN, SDataVal, lenType=SOffset)
@@ -267,6 +272,9 @@ class Fs(simsym.tstruct(
 
         return {'r': 0, 'fds[0]': internal_fd_r, 'fds[1]': internal_fd_w}
 
+
+# ckx:src 和 dst 都会被符号化，但是由于dstdirmap等状态空间也可以被符号化，
+# 所以能影响路径执行的还不仅仅只有src和dst
     @model.methodwrap(src=SPathname, dst=SPathname)
     def rename(self, src, dst):
         internal_time = STime.var('internal_time*')
